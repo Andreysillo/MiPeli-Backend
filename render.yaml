@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: mipeli-api
+    runtime: python
+    plan: free
+    region: virginia
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: mipeli
+      - key: FIREBASE_PROJECT_ID
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://mi-peli.vercel.app
+      - key: TMDB_TOKEN
+        sync: false
+      - key: OMDB_KEY
+        sync: false
+      - key: TASTEDIVE_KEY
+        sync: false
