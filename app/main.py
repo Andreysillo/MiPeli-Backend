@@ -1,11 +1,14 @@
 from contextlib import asynccontextmanager
+from typing import Annotated
 
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pymongo import AsyncMongoClient
 
 from app.cache import ensure_indexes
 from app.config import settings
+from app.deps import current_user
+from app.schemas import Me
 
 
 @asynccontextmanager
@@ -33,3 +36,9 @@ app.add_middleware(
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+# Provisional: prueba la autenticación de punta a punta; /surveys la reemplaza
+@app.get("/me", response_model=Me)
+async def me(uid: Annotated[str, Depends(current_user)]):
+    return Me(uid=uid)
