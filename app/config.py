@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     cors_origins: str = "http://localhost:8000"  # separados por coma
     tmdb_token: str = ""
     omdb_key: str = ""
-    tastedive_key: str = ""
 
     @property
     def origins(self) -> list[str]:

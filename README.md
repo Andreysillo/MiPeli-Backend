@@ -1,6 +1,6 @@
 # MiPeli-Backend
 
-API for [MiPeli](https://github.com/Andreysillo/MiPeli-Frontend): FastAPI on Render, MongoDB Atlas, with TMDB, OMDb and (optionally) TasteDive behind a cache with soft expiry. The contract with the frontend is in the frontend repo, `docs/recomendacion.md`.
+API for [MiPeli](https://github.com/Andreysillo/MiPeli-Frontend): FastAPI on Render, MongoDB Atlas, with TMDB and OMDb behind a cache with soft expiry. The contract with the frontend is in the frontend repo, `docs/recomendacion.md`.
 
 ## Run locally
 

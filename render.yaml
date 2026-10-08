@@ -23,5 +23,3 @@ services:
         sync: false
       - key: OMDB_KEY
         sync: false
-      - key: TASTEDIVE_KEY
-        sync: false
