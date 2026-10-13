@@ -8,6 +8,7 @@ from pymongo import AsyncMongoClient
 from app.cache import ensure_indexes
 from app.config import settings
 from app.deps import current_user
+from app.repositories.mongo import MongoSurveyRepository
 from app.schemas import Me
 
 
@@ -18,6 +19,7 @@ async def lifespan(app: FastAPI):
         client = AsyncMongoClient(settings.mongodb_uri, tz_aware=True)
         app.state.db = client[settings.mongodb_db]
         await ensure_indexes(app.state.db["cache"])
+        await MongoSurveyRepository(app.state.db["surveys"]).ensure_indexes()
     yield
     if client:
         await client.close()
