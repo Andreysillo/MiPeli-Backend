@@ -1,12 +1,15 @@
 from functools import lru_cache
 from typing import Annotated
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Request
 from fastapi.concurrency import run_in_threadpool
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from app.auth import Verifier, firebase_verifier
 from app.config import settings
+from app.repositories.memory import MemorySurveyRepository
+from app.repositories.mongo import MongoSurveyRepository
+from app.repositories.surveys import SurveyRepository
 
 bearer = HTTPBearer(auto_error=False)
 
@@ -27,3 +30,15 @@ async def current_user(
         return await run_in_threadpool(verify, cred.credentials)
     except Exception:
         raise HTTPException(401, "Token inválido o vencido", headers={"WWW-Authenticate": "Bearer"}) from None
+
+
+@lru_cache
+def _memory_repo() -> MemorySurveyRepository:
+    return MemorySurveyRepository()
+
+
+def get_surveys(request: Request) -> SurveyRepository:
+    """Mongo cuando hay base configurada; sin MONGODB_URI (desarrollo local) queda en memoria."""
+    db = getattr(request.app.state, "db", None)
+    # ponytail: en memoria se pierde al reiniciar; solo para desarrollo sin base
+    return MongoSurveyRepository(db["surveys"]) if db is not None else _memory_repo()

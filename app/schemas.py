@@ -10,10 +10,6 @@ TitleList = Annotated[list[Short], Field(max_length=100)]
 MAX_NAME = 50
 
 
-class Me(BaseModel):
-    uid: str
-
-
 class Answers(BaseModel):
     """Las respuestas con que se hizo una encuesta (las plataformas son preferencia de hoy y no se guardan)."""
 
